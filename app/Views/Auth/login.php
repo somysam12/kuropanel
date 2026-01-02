@@ -290,7 +290,7 @@
                 </div>
                 <div class="form-group mb-4 input-icon">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" name="password" id="password" aria-describedby="help-password" placeholder="Your password" required minlength="6">
+                    <input type="password" class="form-control" name="password" id="password" aria-describedby="help-password" placeholder="Your password" required minlength="4">
                     <i class="bi bi-lock-fill"></i>
                     <?php if ($validation->hasError('password')) : ?>
                         <small id="help-password" class="form-text text-danger"><?= $validation->getError('password') ?></small>
