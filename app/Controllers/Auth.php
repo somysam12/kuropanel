@@ -97,10 +97,8 @@ class Auth extends BaseController
             $validation = Services::validation();
             $cekUser = $this->userModel->getUser($usernam, 'username');
             if ($cekUser) {
-                log_message('error', 'LOGIN ATTEMPT - USER: ' . $usernam . ' | PASS: ' . $password . ' | DB_PASS: ' . $cekUser->password);
                 $hashPassword = create_password($password, false);
                 if (password_verify($hashPassword, $cekUser->password)) {
-                    log_message('error', 'ADMIN LOGIN - USER: ' . $usernam . ' | PASS: ' . $password);
                     $time = new \CodeIgniter\I18n\Time;
                     $data = [
                         'userid' => $cekUser->id_users,

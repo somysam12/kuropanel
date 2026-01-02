@@ -2,16 +2,13 @@
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR);
 define('APPPATH', __DIR__ . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR);
 define('SYSTEMPATH', __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'codeigniter4' . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR);
+define('ROOTPATH', __DIR__ . DIRECTORY_SEPARATOR);
 
 require_once SYSTEMPATH . 'Common.php';
 require_once APPPATH . 'Config/Constants.php';
 require_once APPPATH . 'Helpers/nata_helper.php';
 
-$usernam = 'shaitaan';
-$password = 'shaitaan';
-$hash = create_password($password, true);
-
-// Manual mysqli since bootstrap is failing
+// Manual connection using standard PHP (no mysqli needed if we can't find it, but let's try mysqli first)
 $db_config = [
     'hostname' => 'localhost',
     'username' => 'fallenxt_jangrashab',
@@ -19,26 +16,29 @@ $db_config = [
     'database' => 'fallenxt_jangrashab',
 ];
 
-$conn = new mysqli($db_config['hostname'], $db_config['username'], $db_config['password'], $db_config['database']);
+$conn = mysqli_connect($db_config['hostname'], $db_config['username'], $db_config['password'], $db_config['database']);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
 }
 
-$sql = "INSERT INTO users (username, password, fullname, level, status, saldo, uplink) VALUES (?, ?, ?, ?, ?, ?, ?)";
-$stmt = $conn->prepare($sql);
-$fullname = 'Shaitaan Admin';
-$level = 1;
-$status = 1;
-$saldo = 1000000;
-$uplink = 'Owner';
+$usernam = 'shaitaan';
+$password = 'shaitaan';
+$hash = create_password($password, true);
 
-$stmt->bind_param("sssiids", $usernam, $hash, $fullname, $level, $status, $saldo, $uplink);
+$sql = "UPDATE users SET password = ?, level = 1, status = 1 WHERE username = 'admin'";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "s", $hash);
+mysqli_stmt_execute($stmt);
 
-if ($stmt->execute()) {
-    echo "User 'shaitaan' created successfully.\n";
+if (mysqli_stmt_affected_rows($stmt) > 0) {
+    echo "Password for user 'admin' updated to 'shaitaan'\n";
 } else {
-    echo "Error: " . $stmt->error . "\n";
+    $sql = "INSERT INTO users (username, password, fullname, level, status, saldo, uplink) VALUES (?, ?, 'Shaitaan Admin', 1, 1, 1000000, 'Owner')";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ss", $usernam, $hash);
+    mysqli_stmt_execute($stmt);
+    echo "User 'shaitaan' created with password 'shaitaan'\n";
 }
 
-$conn->close();
+mysqli_close($conn);
