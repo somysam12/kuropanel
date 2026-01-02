@@ -317,7 +317,7 @@ class FileHandler extends BaseHandler
         if (($bits = $SIDLength * $bitsPerCharacter) < 160) {
             // Add as many more characters as necessary to reach at least 160 bits
             $SIDLength += (int) ceil((160 % $bits) / $bitsPerCharacter);
-            ini_set('session.sid_length', (string) $SIDLength);
+            @ini_set('session.sid_length', (string) $SIDLength);
         }
 
         switch ($bitsPerCharacter) {

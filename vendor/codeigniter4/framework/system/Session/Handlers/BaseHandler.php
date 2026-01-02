@@ -159,7 +159,7 @@ abstract class BaseHandler implements SessionHandlerInterface
      */
     protected function fail(): bool
     {
-        ini_set('session.save_path', $this->savePath);
+        @ini_set('session.save_path', $this->savePath);
 
         return false;
     }
