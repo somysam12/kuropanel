@@ -23,7 +23,7 @@ class App extends BaseConfig
          *
          * @var string
          */
-        public $baseURL = 'https://97a8bce7-5f1a-4c38-8aa6-552490970708-00-3arc6dd8wi8e5.pike.replit.dev/';
+        public $baseURL = 'http://0.0.0.0:5000/';
 
         /**
          * --------------------------------------------------------------------------
