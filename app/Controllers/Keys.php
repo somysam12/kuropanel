@@ -14,11 +14,10 @@ class Keys extends BaseController
     public function __construct()
     {
         $this->userModel = new UserModel();
-        $this->user = $this->userModel->getUser();
+        $this->userId=session()->get('userid');
+        $this->user = $this->userModel->getUser($this->userId);
         $this->model = new KeysModel();
         $this->time = new \CodeIgniter\I18n\Time;
-
-     $this->userId=session()->get('userid');
         /* ------- Game ------- */
         $this->game_list = [
             'PUBG' => 'PUBG Mobile'
@@ -66,17 +65,16 @@ class Keys extends BaseController
         return view('Keys/list', $data);
     }
     
-public function download_all_Keys(){
-    $model = $this->model;
-    $user = $this->user;
-    $keys = $model->select('user_key')->findAll();
-    $data='';
-    for($i=0;$i<count($keys);$i++){
-        $data.=$keys[$i]['user_key']."\n";
+    public function download_all_Keys(){
+        $model = $this->model;
+        $user = $this->user;
+        $keys = $model->select('user_key')->findAll();
+        $data='';
+        foreach ($keys as $key) {
+            $data .= $key->user_key . "\n";
+        }
+        $this->downloadFile('Newkeys.txt');
     }
-   /* write_file('Newkeys.txt', $data);*/
-    $this->downloadFile('Newkeys.txt');
-}
 
    
 public function download_new_Keys(){

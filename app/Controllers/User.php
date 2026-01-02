@@ -19,8 +19,8 @@ class User extends BaseController
 
     public function __construct()
     {
-        $this->userid = session()->userid;
         $this->model = new UserModel();
+        $this->userid = session()->userid;
         $this->user = $this->model->getUser($this->userid);
         $this->time = new \CodeIgniter\I18n\Time;
         
@@ -57,12 +57,12 @@ class User extends BaseController
         
         if ($this->request->getPost())
         if (($user->level == 1) || ($user->level == 2)){
-		return $this->reff_action();
-	     }
-	     else {
-	         
-	         return redirect()->to('dashboard')->with('msgWarning','Access Denied!');
-	     }
+                return $this->reff_action();
+             }
+             else {
+                 
+                 return redirect()->to('dashboard')->with('msgWarning','Access Denied!');
+             }
 
         $mCode = new CodeModel();
         $validation = Services::validation();
@@ -367,44 +367,44 @@ class User extends BaseController
         //==================================Mod Name======================//
         
         $id = 1;
-	    
-	    $model= new Server();
-	    
-	    $data['row'] = $model->where('id',$id)->first();
-	    
-	     if (($user->level == 1) || ($user->level == 2)){
-		return view('Server/Server',$data);
-	     }
-	     else {
-	         
-	         return redirect()->to('dashboard')->with('msgWarning','Access Denied');
-	     }
+            
+            $model= new Server();
+            
+            $data['row'] = $model->where('id',$id)->first();
+            
+             if (($user->level == 1) || ($user->level == 2)){
+                return view('Server/Server',$data);
+             }
+             else {
+                 
+                 return redirect()->to('dashboard')->with('msgWarning','Access Denied');
+             }
     }
     
     private function _ftext_act()
     {
         $id = 1;
-	    $model= new _ftext();
-	    $myinput = $this->request->getPost('_ftext');
-	    $status = $this->request->getPost('_ftextr');
-	    $wow = '';
-	if($status == "Safe"){
+            $model= new _ftext();
+            $myinput = $this->request->getPost('_ftext');
+            $status = $this->request->getPost('_ftextr');
+            $wow = '';
+        if($status == "Safe"){
             $wow .= "Safe";
         }else{
             $wow .= "Anti-Cheat is High..!!";
         }
       $data = ['_ftext' => $myinput,'_status' => $wow];
-	    $model->update($id,$data);
-	    return redirect()->back()->with('msgSuccess', 'Successfuly Changed Mod Floating And Status.');
+            $model->update($id,$data);
+            return redirect()->back()->with('msgSuccess', 'Successfuly Changed Mod Floating And Status.');
     }
     
     private function status_act()
     {
         $id = 1;
-	    $model= new onoff();
-	    $myinput = $this->request->getPost('myInput');
-	    $wow = '';
-	    if(isset($_POST['radios']) && $_POST['radios'] == 'on') 
+            $model= new onoff();
+            $myinput = $this->request->getPost('myInput');
+            $wow = '';
+            if(isset($_POST['radios']) && $_POST['radios'] == 'on') 
         {
             $wow .= "on";
         }
@@ -412,30 +412,30 @@ class User extends BaseController
         {
             $wow .= "off";
         }
-	    $data = [
-	        'status' => $wow,
-    	    'myinput' => $myinput
-	    ];
-	    $model->update($id, $data);
-	    return redirect()->back()->with('msgSuccess', 'Mod Status Successfuly Changed.');
+            $data = [
+                'status' => $wow,
+            'myinput' => $myinput
+            ];
+            $model->update($id, $data);
+            return redirect()->back()->with('msgSuccess', 'Mod Status Successfuly Changed.');
     }
     
     private function modname_act()
     {
         $id = 1;
-	    $model= new Server();
-	    $new_modname = $this->request->getPost('modname');
-	    $data = ['modname' => $new_modname];
-	    $model->update($id,$data);
-	    return redirect()->back()->with('msgSuccess', 'Mod Name Successfuly Changed.');
+            $model= new Server();
+            $new_modname = $this->request->getPost('modname');
+            $data = ['modname' => $new_modname];
+            $model->update($id,$data);
+            return redirect()->back()->with('msgSuccess', 'Mod Name Successfuly Changed.');
     }
     
     private function feature_act()
     {
         $id = 1;
-	    $model = new Feature();
+            $model = new Feature();
 //=================================================//
-	    if(isset($_POST['ESP']) && $_POST['ESP'] == 'on') 
+            if(isset($_POST['ESP']) && $_POST['ESP'] == 'on') 
         {
             $new_espvalue = "on";
         }
@@ -444,7 +444,7 @@ class User extends BaseController
             $new_espvalue = "off";
         }
 //=================================================//
-	    if(isset($_POST['Item']) && $_POST['Item'] == 'on') 
+            if(isset($_POST['Item']) && $_POST['Item'] == 'on') 
         {
             $new_Itemvalue = "on";
         }
@@ -453,7 +453,7 @@ class User extends BaseController
             $new_Itemvalue = "off";
         }
 //=================================================//
-	    if(isset($_POST['AIM']) && $_POST['AIM'] == 'on') 
+            if(isset($_POST['AIM']) && $_POST['AIM'] == 'on') 
         {
             $new_aimvalue = "on";
         }
@@ -462,7 +462,7 @@ class User extends BaseController
             $new_aimvalue = "off";
         }
 //=================================================//
-	    if(isset($_POST['SilentAim']) && $_POST['SilentAim'] == 'on') 
+            if(isset($_POST['SilentAim']) && $_POST['SilentAim'] == 'on') 
         {
             $new_SilentAimvalue = "on";
         }
@@ -471,7 +471,7 @@ class User extends BaseController
             $new_SilentAimvalue = "off";
         }
 //=================================================//
-	    if(isset($_POST['BulletTrack']) && $_POST['BulletTrack'] == 'on') 
+            if(isset($_POST['BulletTrack']) && $_POST['BulletTrack'] == 'on') 
         {
             $new_BulletTrackvalue = "on";
         }
@@ -480,7 +480,7 @@ class User extends BaseController
             $new_BulletTrackvalue = "off";
         }
 //=================================================//
-	    if(isset($_POST['Memory']) && $_POST['Memory'] == 'on') 
+            if(isset($_POST['Memory']) && $_POST['Memory'] == 'on') 
         {
             $new_Memoryvalue = "on";
         }
@@ -489,7 +489,7 @@ class User extends BaseController
             $new_Memoryvalue = "off";
         }
 //=================================================//
-	    if(isset($_POST['Floating']) && $_POST['Floating'] == 'on') 
+            if(isset($_POST['Floating']) && $_POST['Floating'] == 'on') 
         {
             $new_Floatingvalue = "on";
         }
@@ -498,7 +498,7 @@ class User extends BaseController
             $new_Floatingvalue = "off";
         }
 //=================================================//
-	    if(isset($_POST['Setting']) && $_POST['Setting'] == 'on') 
+            if(isset($_POST['Setting']) && $_POST['Setting'] == 'on') 
         {
             $new_Settingvalue = "on";
         }
@@ -507,18 +507,18 @@ class User extends BaseController
             $new_Settingvalue = "off";
         }
 //=================================================//
-	    $data = [
-    	    'ESP' => $new_espvalue,
-    	    'Item' => $new_Itemvalue,
-    	    'SilentAim' => $new_SilentAimvalue,
-    	    'AIM' => $new_aimvalue,
-    	    'BulletTrack' => $new_BulletTrackvalue,
-    	    'Memory' => $new_Memoryvalue,
-    	    'Floating' => $new_Floatingvalue,
-    	    'Setting' => $new_Settingvalue
-	    ];
-	    $model->update($id,$data);
-	    return redirect()->back()->with('msgSuccess', 'Mod Feature Stats Changed.');
+            $data = [
+            'ESP' => $new_espvalue,
+            'Item' => $new_Itemvalue,
+            'SilentAim' => $new_SilentAimvalue,
+            'AIM' => $new_aimvalue,
+            'BulletTrack' => $new_BulletTrackvalue,
+            'Memory' => $new_Memoryvalue,
+            'Floating' => $new_Floatingvalue,
+            'Setting' => $new_Settingvalue
+            ];
+            $model->update($id,$data);
+            return redirect()->back()->with('msgSuccess', 'Mod Feature Stats Changed.');
     }
     
     private function passwd_act()

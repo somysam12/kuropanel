@@ -12,8 +12,8 @@ use CodeIgniter\Controller;
 class Home extends BaseController
 {
 
-	public function index()
-	{
-	    echo view('New');
-	}
+        public function index()
+        {
+            return view('welcome_message');
+        }
 }

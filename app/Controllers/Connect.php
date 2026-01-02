@@ -10,21 +10,17 @@ class Connect extends BaseController
 
     public function __construct()
     {
-        include('conn.php');
-//=================================================
-        $sql1 ="select * from onoff where id=1";
-        $result1 = mysqli_query($conn, $sql1);
-        $userDetails1 = mysqli_fetch_assoc($result1);
-//=================================================
         $this->model = new KeysModel();
-//=================================================
-        if($userDetails1['status'] == 'on')
+        
+        $db = \Config\Database::connect();
+        $userDetails1 = $db->table('onoff')->where('id', 1)->get()->getRowArray();
+
+        if($userDetails1 && $userDetails1['status'] == 'on')
         {
             $this->maintenance = true;
         } else {
             $this->maintenance = false;
         }
-//=================================================
        $this->staticWords = "Vm8Lk7Uj2JmsjCPVPVjrLa7zgfx3uz9E";
     }
 
@@ -72,17 +68,12 @@ class Connect extends BaseController
         }
 
         if ($isMT) {
-            
-            include('conn.php');
-        
-            $sql1 ="select * from onoff where id=1";
-            $result1 = mysqli_query($conn, $sql1);
-            $userDetails1 = mysqli_fetch_assoc($result1);
-        
+            $db = \Config\Database::connect();
+            $userDetails1 = $db->table('onoff')->where('id', 1)->get()->getRowArray();
             
             $data = [
                 'status' => true,
-                'reason' => $userDetails1['myinput']
+                'reason' => $userDetails1['myinput'] ?? ''
             ];
         } else {
             if (!$game or !$uKey or !$sDev) {
@@ -145,57 +136,42 @@ class Connect extends BaseController
                         }
     
                         if ($data['status']) {
-                            
-                            include('conn.php');
-        
-                            $sql2 ="select * from modname where id=1";
-                            $result2 = mysqli_query($conn, $sql2);
-                            $userDetails2 = mysqli_fetch_assoc($result2);
-                            
-                            $sql3 ="select * from _ftext where id=1";
-                            $result3 = mysqli_query($conn, $sql3);
-                            $userDetails3 = mysqli_fetch_assoc($result3);
-                            
-                            $sql4 = "SELECT expired_date FROM keys_code WHERE user_key='$uKey'";
-                            $result4 = mysqli_query($conn, $sql4);
-                            $userDetails4 = mysqli_fetch_assoc($result4);
-//=================================================
-        $sql = "SELECT * FROM Feature WHERE id=1";
-        $result = mysqli_query($conn, $sql);
-        $ModFeatureStatus = mysqli_fetch_assoc($result);
-//=================================================
-        $rngcnt = $time->getTimestamp();
-//=================================================
+                            $db = \Config\Database::connect();
+                            $userDetails2 = $db->table('modname')->where('id', 1)->get()->getRowArray();
+                            $userDetails3 = $db->table('_ftext')->where('id', 1)->get()->getRowArray();
+                            $userDetails4 = $db->table('keys_code')->select('expired_date')->where('user_key', $uKey)->get()->getRowArray();
+                            $ModFeatureStatus = $db->table('Feature')->where('id', 1)->get()->getRowArray();
+
+                            $rngcnt = $time->getTimestamp();
                             $devicesAdd = checkDevicesAdd($sDev, $devices, $max_dev);
                             if ($devicesAdd) {
                                 if (is_array($devicesAdd)) {
                                     $model->update($id_keys, $devicesAdd);
                                 }
-                                // ? game-user_key-serial-word di line 15
                                 $real = "$game-$uKey-$sDev-$this->staticWords";
                                 
                                 $expiry = $findKey->expired_date;
-                            if ($expiry == null) {
-                                 $expiry = $time::now()->addDays($duration);
-                            }
+                                if ($expiry == null) {
+                                     $expiry = $time::now()->addHours($duration);
+                                }
                             
                                 $data = [
                                     'status' => true,
                                     'data' => [
                                         'real' => $real,
                                         'token' => md5($real),
-                                        'modname' => $userDetails2['modname'],
-                                        'mod_status' => $userDetails3['_status'],
-                                        'credit' => $userDetails3['_ftext'],
-                                        'ESP' => $ModFeatureStatus['ESP'],
-                                        'Item' => $ModFeatureStatus['Item'],
-                                        'AIM' => $ModFeatureStatus['AIM'],
-                                        'SilentAim' => $ModFeatureStatus['SilentAim'],
-                                        'BulletTrack' => $ModFeatureStatus['BulletTrack'],
-                                        'Floating' => $ModFeatureStatus['Floating'],
-                                        'Memory' => $ModFeatureStatus['Memory'],
-                                        'Setting' => $ModFeatureStatus['Setting'],
-                                        'expired_date' => $userDetails4['expired_date'],
+                                        'modname' => $userDetails2['modname'] ?? '',
+                                        'mod_status' => $userDetails3['_status'] ?? '',
+                                        'credit' => $userDetails3['_ftext'] ?? '',
+                                        'ESP' => $ModFeatureStatus['ESP'] ?? 'off',
+                                        'Item' => $ModFeatureStatus['Item'] ?? 'off',
+                                        'AIM' => $ModFeatureStatus['AIM'] ?? 'off',
+                                        'SilentAim' => $ModFeatureStatus['SilentAim'] ?? 'off',
+                                        'BulletTrack' => $ModFeatureStatus['BulletTrack'] ?? 'off',
+                                        'Floating' => $ModFeatureStatus['Floating'] ?? 'off',
+                                        'Memory' => $ModFeatureStatus['Memory'] ?? 'off',
+                                        'Setting' => $ModFeatureStatus['Setting'] ?? 'off',
+                                        'expired_date' => $userDetails4['expired_date'] ?? null,
                                         'EXP' => $expiry,
                                         'exdate' => $expiry,
                                         'device'=> $max_dev,

@@ -24,6 +24,7 @@ class UserModel extends Model
     public function getUser($userid = false, $where = 'default')
     {
         $userid = $userid ?: session()->userid;
+        if (!$userid) return null;
         $where = ($where == 'default' ? 'id_users' : $where);
         $wfind = $this->where($where, $userid)
             ->get()
