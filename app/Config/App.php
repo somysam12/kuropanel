@@ -24,37 +24,7 @@ class App extends BaseConfig
          * @var string
          */
         public $baseURL = 'http://0.0.0.0:5000/';
-
-        /**
-         * --------------------------------------------------------------------------
-         * Index File
-         * --------------------------------------------------------------------------
-         *
-         * Typically this will be your index.php file, unless you've renamed it to
-         * something else. If you are using mod_rewrite to remove the page set this
-         * variable so that it is blank.
-         *
-         * @var string
-         */
-        public $indexPage = '/';
-
-        /**
-         * --------------------------------------------------------------------------
-         * URI PROTOCOL
-         * --------------------------------------------------------------------------
-         *
-         * This item determines which getServer global should be used to retrieve the
-         * URI string.  The default setting of 'REQUEST_URI' works for most servers.
-         * If your links do not seem to work, try one of the other delicious flavors:
-         *
-         * 'REQUEST_URI'    Uses $_SERVER['REQUEST_URI']
-         * 'QUERY_STRING'   Uses $_SERVER['QUERY_STRING']
-         * 'PATH_INFO'      Uses $_SERVER['PATH_INFO']
-         *
-         * WARNING: If you set this to 'PATH_INFO', URIs will always be URL-decoded!
-         *
-         * @var string
-         */
+        public $indexPage = '';
         public $uriProtocol = 'REQUEST_URI';
 
         /**

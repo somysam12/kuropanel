@@ -30,4 +30,4 @@ $app = require realpath($bootstrap) ?: $bootstrap;
  * relax while the application is launched.
  */
 
-$app->run();
+echo "Handled by CI4"; $app->run();

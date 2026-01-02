@@ -8,7 +8,7 @@ $routes = Services::routes();
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
 if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
-	require SYSTEMPATH . 'Config/Routes.php';
+        require SYSTEMPATH . 'Config/Routes.php';
 }
 
 /**
@@ -21,7 +21,7 @@ $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
-$routes->setAutoRoute(false);
+$routes->setAutoRoute(true);
 
 /*
  * --------------------------------------------------------------------
@@ -31,12 +31,13 @@ $routes->setAutoRoute(false);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('dbg', 'Auth::index');
-$routes->get('logout', 'Auth::logout');
-$routes->get('dashboard', 'User::index');
 $routes->match(['get', 'post'], '/', 'Auth::login');
-$routes->match(['get', 'post'], 'login', 'Auth::login');
-$routes->match(['get', 'post'], 'register', 'Auth::register');//Server
+$routes->get('login', 'Auth::login');
+$routes->post('login', 'Auth::login');
+$routes->get('register', 'Auth::register');
+$routes->post('register', 'Auth::register');
+$routes->get('dashboard', 'User::index');
+$routes->get('logout', 'Auth::logout');
 
 
 
@@ -51,26 +52,26 @@ $routes->match(['get', 'post'], 'New', 'Home::index');
 //
 
 $routes->group('keys', function ($routes) {
-	$routes->match(['get', 'post'], '/', 'Keys::index');
-	$routes->match(['get', 'post'], 'generate', 'Keys::generate');
-		$routes->match(['get', 'post'], 'deleteUnused', 'Keys::deleteUnused');
-	$routes->get('(:num)', 'Keys::edit_key/$1');
-	$routes->get('reset', 'Keys::api_key_reset');
-	$routes->post('edit', 'Keys::edit_key');
-	$routes->match(['get', 'post'], 'api', 'Keys::api_get_keys');
-	$routes->match(['get'],'deleteExp','Keys::deleteExpired');
-	$routes->match(['get'],'resetAll','Keys::resetAllKeys');
+        $routes->match(['get', 'post'], '/', 'Keys::index');
+        $routes->match(['get', 'post'], 'generate', 'Keys::generate');
+                $routes->match(['get', 'post'], 'deleteUnused', 'Keys::deleteUnused');
+        $routes->get('(:num)', 'Keys::edit_key/$1');
+        $routes->get('reset', 'Keys::api_key_reset');
+        $routes->post('edit', 'Keys::edit_key');
+        $routes->match(['get', 'post'], 'api', 'Keys::api_get_keys');
+        $routes->match(['get'],'deleteExp','Keys::deleteExpired');
+        $routes->match(['get'],'resetAll','Keys::resetAllKeys');
       //  $routes->match(['get'],'deleteUnused','Keys::deleteUnused');
 });
 
 $routes->group('admin', ['filter' => 'admin'], function ($routes) {
-	$routes->match(['get', 'post'], 'create-referral', 'User::ref_index');
-	$routes->match(['get', 'post'], 'manage-users', 'User::manage_users');
-	$routes->match(['get', 'post'], 'user/(:num)', 'User::user_edit/$1');
-	/* --------------------------- Admin API Grouping -------------------------- */
-	$routes->group('api', function ($routes) {
-		$routes->match(['get', 'post'], 'users', 'User::api_get_users');
-	});
+        $routes->match(['get', 'post'], 'create-referral', 'User::ref_index');
+        $routes->match(['get', 'post'], 'manage-users', 'User::manage_users');
+        $routes->match(['get', 'post'], 'user/(:num)', 'User::user_edit/$1');
+        /* --------------------------- Admin API Grouping -------------------------- */
+        $routes->group('api', function ($routes) {
+                $routes->match(['get', 'post'], 'users', 'User::api_get_users');
+        });
 });
 
 $routes->match(['get', 'post'], 'connect', 'Connect::index');
@@ -88,5 +89,5 @@ $routes->match(['get', 'post'], 'connect', 'Connect::index');
  * needing to reload it.
  */
 if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
-	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+        require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
