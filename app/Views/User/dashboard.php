@@ -3,7 +3,7 @@ include('conn.php');
 include('mail.php');
 include('UserMail.php');
 
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
+
 
 // For Credits
 $sql = "SELECT * FROM credit where id=1";

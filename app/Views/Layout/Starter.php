@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
+
 
 <head>
     <!-- Required meta tags -->

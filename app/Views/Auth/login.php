@@ -1,5 +1,5 @@
 <?= $this->extend('Layout/Starter') ?>
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL//
+
 <?= $this->section('content') ?>
 
 <style>
@@ -329,8 +329,8 @@
         
         <p class="text-center after-card">
             <small class="px-auto p-2 rounded">
-                TO BUY PANEL DM HERE :-
-                <a href="https://telegram.me/AloneBoy_Boss" class="register-link">@AloneBoy_Boss</a>
+                
+                <a href="https://telegram.me/AloneBoy_Boss" class="register-link"></a>
             </small>
         </p>
     </div>

@@ -2,7 +2,7 @@
 include('mail.php');
 ?>
 
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
+
 
 <?= $this->extend('Layout/Starter') ?>
 

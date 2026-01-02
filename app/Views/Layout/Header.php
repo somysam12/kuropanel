@@ -1,6 +1,6 @@
 <header>
 
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
+
 
   <nav class="navbar navbar-expand-md navbar-dark shadow-sm align-middle custom-navbar" role="alert" style="background: rgba(93, 63, 159, 0.8) !important; backdrop-filter: blur(10px);">
         <div class="container px-3">

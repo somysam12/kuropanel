@@ -339,4 +339,3 @@
 </script>
 <?= $this->endSection() ?>
 
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //

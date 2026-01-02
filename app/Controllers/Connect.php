@@ -1,5 +1,5 @@
 <?php
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
+
 namespace App\Controllers;
 
 use App\Models\KeysModel;
@@ -41,7 +41,7 @@ class Connect extends BaseController
                            ],
             ];
             
-            return "<h1><strong><center><font size='10' color='red' face='arial'><marquee direction='right' scrollamount='15'>WANT OWN KURO PANEL?<br> @ONLINE_KURO_PANEL </marquee></font></center></strong></h1>";
+            return "<h1><strong><center><font size='10' color='red' face='arial'><marquee direction='right' scrollamount='15'>  </marquee></font></center></strong></h1>";
             $this->response->setJSON($nata);
         }
     }

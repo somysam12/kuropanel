@@ -2,7 +2,7 @@
 include('conn.php');
 include('mail.php');
 
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
+
 
 // for maintainece mode
 $sql1 ="select * from onoff where id=1";

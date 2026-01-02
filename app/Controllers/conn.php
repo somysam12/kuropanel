@@ -1,5 +1,5 @@
 <?php
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
+
 $servername = "localhost";
 $username = "ranaoptr_gangster";
 $password = "ranaoptr_gangster";

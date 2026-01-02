@@ -1,6 +1,6 @@
 <?php
 
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
+
 
 function color($value) {
     if($value == 1) {

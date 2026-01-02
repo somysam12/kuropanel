@@ -2,7 +2,7 @@
 include('conn.php');
 include('mail.php');
 
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
+
 
 // For Highest id Ref
 $sqli = "SELECT * FROM referral_code

@@ -15,4 +15,3 @@ die(" PROBLEM WITH CONNECTION : " . mysqli_connect_error());
   
 ?>
 
-// JOIN MORE UPDATES @ONLINE_KURO_PANEL //
