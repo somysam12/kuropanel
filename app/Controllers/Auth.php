@@ -106,31 +106,25 @@ class Auth extends BaseController
                         'time_login' => $stay_log ? $time::now()->addHours(24) : $time::now()->addMinutes(30),
                         'time_since' => $time::now(),
                     ];
-                    include('conn.php');
-                    $sql = "SELECT `expiration_date` FROM `users` WHERE `username` = '".$usernam."' AND `expiration_date` > '".$time::now()."'";
-                    $query = mysqli_query($conn, $sql);
-                    $exp = mysqli_fetch_assoc($query);
+                    $db = \Config\Database::connect();
+                    $exp = $db->table('users')
+                        ->where('username', $usernam)
+                        ->where('expiration_date >', $time::now())
+                        ->get()
+                        ->getRow();
                     
+                    $user_data = $db->table('users')
+                        ->where('username', $usernam)
+                        ->get()
+                        ->getRow();
                     
-                    $sql1 = "SELECT `expiration_date` FROM `users` WHERE `username` = '".$usernam."'";
-                    $query1 = mysqli_query($conn, $sql1);
-                    $msgexp = mysqli_fetch_assoc($query1);
-                    
-                    $status = "SELECT status FROM users WHERE username = '".$usernam."'";
-                    $status_query = mysqli_query($conn, $status);
-                    $sts = mysqli_fetch_assoc($status_query);
-                    
-                    if($exp && $sts) {
-                    session()->set($data);
-                    include('UserMail.php');
-                    $phpmsg = $msgexp['expiration_date'];
-                    $expmsg = "Account Expires on : $phpmsg";
-                    
-                    return redirect()->to('dashboard')->with('msgSuccess', $expmsg);
+                    if($exp && $user_data->status == 1) {
+                        session()->set($data);
+                        // include('UserMail.php'); // Temporary disabled until refactored
+                        $expmsg = "Account Expires on : " . $user_data->expiration_date;
+                        return redirect()->to('dashboard')->with('msgSuccess', $expmsg);
                     } else {
-                    return redirect()->route('login')->withInput()->with('msgDanger', '<strong>Expired</strong> Please Renew Your Account to Login.');
-                    $status = "UPDATE status FROM users WHERE username = '".$usernam."'";
-                    $status_query = mysqli_query($conn, $status);
+                        return redirect()->route('login')->withInput()->with('msgDanger', '<strong>Expired</strong> Please Renew Your Account to Login.');
                     }
                 } else {
                     $validation->setError('password', 'Wrong password, please try again.');
@@ -187,44 +181,40 @@ class Auth extends BaseController
         if (!$this->validate($form_rules)) {
             // Form Invalid
         } else {
-            $mCode = new CodeModel();
-            $rCheck = $mCode->checkCode($referral);
-            $validation = Services::validation();
-            if (!$rCheck) {
-                $validation->setError('referral', 'Wrong referral, please try again.');
-            } else {
-                if ($rCheck->used_by) {
-                    $validation->setError('referral', "Wrong referral, code has been used &middot; $rCheck->used_by.");
-                } else {
-                    $hashPassword = create_password($password);
-                    $ipaddress = $_SERVER['REMOTE_ADDR'];
-                    include('conn.php');
-                    $sql = "SELECT `acc_expiration` FROM `referral_code` WHERE `Referral` = '".$referral."'";
-                    $query = mysqli_query($conn, $sql);
-                    $period = mysqli_fetch_assoc($query);
+                    $db = \Config\Database::connect();
+                    $rCheck = $db->table('referral_code')
+                        ->where('Referral', $referral)
+                        ->get()
+                        ->getRow();
                     
-                    $sql1 = "SELECT `level` FROM `referral_code` WHERE `Referral` = '".$referral."'";
-                    $query1 = mysqli_query($conn, $sql1);
-                    $userLevel = mysqli_fetch_assoc($query1);
-                    $data_register = [
-                        'email' => $email,
-                        'username' => $userna,
-                        'fullname' => $fullname,
-                        'level' => $userLevel,
-                        'password' => $hashPassword,
-                        'saldo' => $rCheck->set_saldo ?: 0,
-                        'uplink' => $rCheck->created_by,
-                        'user_ip' => $ipaddress,
-                        'expiration_date' => $period
-                    ];
-                    $ids = $this->userModel->insert($data_register, true);
-                    if ($ids) {
-                        $mCode->useReferral($referral);
-                        $msg = "Register Successfuly!";
-                        return redirect()->to('login')->with('msgSuccess', $msg);
+                    if (!$rCheck) {
+                        $validation->setError('referral', 'Wrong referral, please try again.');
+                    } else {
+                        if ($rCheck->used_by) {
+                            $validation->setError('referral', "Wrong referral, code has been used &middot; $rCheck->used_by.");
+                        } else {
+                            $hashPassword = create_password($password);
+                            $ipaddress = $_SERVER['REMOTE_ADDR'];
+                            
+                            $data_register = [
+                                'email'           => $email,
+                                'username'        => $userna,
+                                'fullname'        => $fullname,
+                                'level'           => $rCheck->level,
+                                'password'        => $hashPassword,
+                                'saldo'           => $rCheck->set_saldo ?: 0,
+                                'uplink'          => $rCheck->created_by,
+                                'user_ip'         => $ipaddress,
+                                'expiration_date' => $rCheck->acc_expiration
+                            ];
+                            $ids = $this->userModel->insert($data_register, true);
+                            if ($ids) {
+                                $mCode->useReferral($referral, $userna);
+                                $msg = "Register Successfuly!";
+                                return redirect()->to('login')->with('msgSuccess', $msg);
+                            }
+                        }
                     }
-                }
-            }
         }
         return redirect()->route('register')->withInput()->with('msgDanger', '<strong>Failed</strong> Please check the form.');
     }
